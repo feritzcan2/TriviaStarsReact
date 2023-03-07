@@ -44,7 +44,7 @@ class StoryScreen extends React.Component {
           overflowY: "scroll",
           height: "100vh",
           width: "100vw",
-          backgroundColor: "#FFF4EE",
+          backgroundColor: "#734b6d",
         }}
       >
         {this.state.data.map((question, index2) => {
@@ -54,30 +54,86 @@ class StoryScreen extends React.Component {
               style={{
                 flexDirection: "column",
                 display: "flex",
-                height: "200px",
-                width: "100vw",
-                backgroundColor: "cyan",
-                marginBottom: "10px",
-                marginTop: "10px",
+                minHeight: "200px",
+                backgroundColor: "#FFF4EE",
+                margin: "50px",
                 justifyContent: "center",
                 alignItems: "center",
               }}
               key={{ index2 }}
             >
-              <h6 style={{ color: "#352477" }}>{question.question}</h6>
-
-              <Button
-                style={{ backgroundColor: "#352477" }}
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                  let arr = this.state.data;
-                  arr.shift();
-                  this.setState({ data: arr });
+              <h3
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#474a59",
+                  color: "#f09e51",
                 }}
               >
-                {question.name}
-              </Button>
+                {question.question}
+              </h3>
+              <div style={{ width: "10px" }}></div>
+
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "30px",
+                  flexDirection: "row",
+                }}
+              >
+                <div>
+                  <h6 style={{ backgroundColor: "#f09e51", color: "#352477" }}>
+                    A) {question.correctAnswer}
+                  </h6>
+                  <h6 style={{ color: "#352477" }}>
+                    B) {question.incorrectAnswers[0]}
+                  </h6>
+                </div>
+                <div style={{ width: "10px" }}></div>
+                <div>
+                  <h6 style={{ color: "#352477" }}>
+                    C) {question.incorrectAnswers[1]}
+                  </h6>
+                  <h6 style={{ color: "#352477" }}>
+                    D) {question.incorrectAnswers[2]}
+                  </h6>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "30px",
+                  marginBottom: "15px",
+                  flexDirection: "row",
+                }}
+              >
+                <Button
+                  style={{ backgroundColor: "#352477" }}
+                  variant="primary"
+                  size="lg"
+                  onClick={() => {
+                    let arr = this.state.data;
+                    arr.shift();
+                    this.setState({ data: arr });
+                  }}
+                >
+                  ACCEPT
+                </Button>
+                <div style={{ width: "30px" }}></div>
+
+                <Button
+                  style={{ backgroundColor: "#352477" }}
+                  variant="primary"
+                  size="lg"
+                  onClick={() => {
+                    let arr = this.state.data;
+                    arr.shift();
+                    this.setState({ data: arr });
+                  }}
+                >
+                  REJECT
+                </Button>
+              </div>
             </div>
           );
         })}
