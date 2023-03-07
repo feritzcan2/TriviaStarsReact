@@ -3,7 +3,8 @@ import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 function withParams(Component) {
   return (props) => <Component {...props} params={useParams()} />;
 }
@@ -22,20 +23,36 @@ class StoryScreen extends React.Component {
   }
   componentDidMount() {
     fetch(
-      "https://localhost:44396/QuestionReview/questions?page=" +
+      "http://localhost:5001/QuestionReview/questions?page=" +
         this.state.page +
         "&pageSize=" +
-        this.state.pageSize
+        this.state.pageSize+"&catagory="+this.state.catagoryId
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         this.setState({ data: data });
       })
       .catch((err) => {
         console.log(err.message);
       });
   }
+
+  saveItem( index,accepted){
+    let arr = this.state.data;
+    let item = arr[index]
+    arr.splice(index,1);
+    this.setState({ data: arr });
+    var data =JSON.stringify({ 
+      Question: item,Accepted:accepted })
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: data };
+
+  fetch("http://localhost:5001/QuestionReview/updateQuestion", requestOptions)
+      .then(response => console.log(response))
+  }
+  
 
   render() {
     return (
@@ -48,10 +65,11 @@ class StoryScreen extends React.Component {
         }}
       >
         {this.state.data.map((question, index2) => {
-          console.log(question);
           return (
             <div
+              key={question.id}
               style={{
+                
                 flexDirection: "column",
                 display: "flex",
                 minHeight: "200px",
@@ -60,7 +78,6 @@ class StoryScreen extends React.Component {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              key={{ index2 }}
             >
               <h3
                 style={{
@@ -73,6 +90,7 @@ class StoryScreen extends React.Component {
               </h3>
               <div style={{ width: "10px" }}></div>
 
+
               <div
                 style={{
                   display: "flex",
@@ -80,6 +98,9 @@ class StoryScreen extends React.Component {
                   flexDirection: "row",
                 }}
               >
+
+                 
+
                 <div>
                   <h6 style={{ backgroundColor: "#f09e51", color: "#352477" }}>
                     A) {question.correctAnswer}
@@ -97,24 +118,49 @@ class StoryScreen extends React.Component {
                     D) {question.incorrectAnswers[2]}
                   </h6>
                 </div>
+
+   
               </div>
 
+              <Dropdown style={{marginTop:"20px"}} as={ButtonGroup}> 
+      <Button variant="success">{question.difficulty}</Button>
+
+      <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+      <Dropdown.Menu>
+        <Dropdown.Item onClick={()=>{
+                    let data = this.state.data;
+                    data[index2].difficulty="easy"
+                    this.setState({data:data})
+        }}>Easy</Dropdown.Item>
+        <Dropdown.Item onClick={()=>{
+                    let data = this.state.data;
+                    data[index2].difficulty="medium"
+                    this.setState({data:data})
+        }}>Medium</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    let data = this.state.data;
+                    data[index2].difficulty="hard"
+                    this.setState({data:data})
+        }}>Hard</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
               <div
                 style={{
                   display: "flex",
-                  marginTop: "30px",
+                  marginTop: "10px",
                   marginBottom: "15px",
                   flexDirection: "row",
                 }}
               >
+
+
                 <Button
                   style={{ backgroundColor: "#352477" }}
                   variant="primary"
                   size="lg"
                   onClick={() => {
-                    let arr = this.state.data;
-                    arr.shift();
-                    this.setState({ data: arr });
+                    this.saveItem(index2,true)
                   }}
                 >
                   ACCEPT
@@ -126,9 +172,7 @@ class StoryScreen extends React.Component {
                   variant="primary"
                   size="lg"
                   onClick={() => {
-                    let arr = this.state.data;
-                    arr.shift();
-                    this.setState({ data: arr });
+                    this.saveItem(index2,false)
                   }}
                 >
                   REJECT

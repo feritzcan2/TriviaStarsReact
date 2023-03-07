@@ -17,15 +17,12 @@ class Home extends React.Component {
       catagories: [],
     };
   }
-  onChange = (params) => {
-    this.setState({ name: params.target.value.replace(/ /g, "") });
-  };
+ 
 
   componentDidMount() {
-    fetch("https://localhost:44396/QuestionReview/catagories")
+    fetch("http://localhost:5001/QuestionReview/catagories")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         this.setState({ catagories: data });
       })
       .catch((err) => {
@@ -39,31 +36,27 @@ class Home extends React.Component {
       <div
         className="home-container"
         style={{
-          display: "flex",
-          height: "100vh",
-          backgroundColor: "#FFF4EE",
-          justifyContent: "center",
-          alignItems: "center",
+          overflowY: "scroll",
+          backgroundColor: "#FFF4EE"
         }}
       >
         {this.state.catagories.map((name, index2) => {
-          console.log(name);
           return (
-            <div key={{ index2 }}>
+            <div key={name.id}>
               <Button
+              key={name.id}
                 style={{ backgroundColor: "#352477" }}
                 variant="primary"
                 size="lg"
                 onClick={() => {
                   history.push("/");
-
-                  this.setState({ redirect: true });
+                  this.setState({ redirect: true,redirectKey:name.id });
                 }}
               >
                 {name.name}
-              </Button>
+              </Button >
               {this.state.redirect && (
-                <Navigate to={"reviews/" + name.id} replace={true} />
+                <Navigate key={name.id} to={"reviews/" + this.state.redirectKey} replace={true} />
               )}
             </div>
           );
