@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/TriviaStarsReact/static/css/main.e5c73524.css",
+    "main.js": "/TriviaStarsReact/static/js/main.b2e58d13.js",
+    "static/js/787.8f67573e.chunk.js": "/TriviaStarsReact/static/js/787.8f67573e.chunk.js",
+    "static/media/kapak.jpg": "/TriviaStarsReact/static/media/kapak.22744fee74900032150c.jpg",
+    "index.html": "/TriviaStarsReact/index.html",
+    "main.e5c73524.css.map": "/TriviaStarsReact/static/css/main.e5c73524.css.map",
+    "main.b2e58d13.js.map": "/TriviaStarsReact/static/js/main.b2e58d13.js.map",
+    "787.8f67573e.chunk.js.map": "/TriviaStarsReact/static/js/787.8f67573e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e5c73524.css",
+    "static/js/main.b2e58d13.js"
+  ]
+}
