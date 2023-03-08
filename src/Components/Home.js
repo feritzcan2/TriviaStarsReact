@@ -20,7 +20,7 @@ class Home extends React.Component {
  
 
   componentDidMount() {
-    fetch("http://localhost:5001/QuestionReview/catagories")
+    fetch("http://triviacrack-env.eba-3vx47zu9.us-east-1.elasticbeanstalk.com/QuestionReview/catagories")
       .then((res) => res.json())
       .then((data) => {
         this.setState({ catagories: data });
