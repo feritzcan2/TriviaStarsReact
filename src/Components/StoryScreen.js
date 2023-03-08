@@ -17,13 +17,14 @@ class StoryScreen extends React.Component {
     this.state = {
       catagoryId: catagoryId,
       page: 1,
-      pageSize: 10,
+      pageSize: 3,
       data: [],
+      fetchingData:false
     };
   }
   componentDidMount() {
     fetch(
-      "http://localhost:5001/QuestionReview/questions?page=" +
+      "http://triviacrack-env.eba-3vx47zu9.us-east-1.elasticbeanstalk.com/QuestionReview/questions?page=" +
         this.state.page +
         "&pageSize=" +
         this.state.pageSize+"&catagory="+this.state.catagoryId
@@ -33,6 +34,27 @@ class StoryScreen extends React.Component {
         this.setState({ data: data });
       })
       .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  getNewData(){
+    if(this.state.fetchingData == true )return;
+    if(this.state.data.length>1)return;
+    this.setState({fetchingData:true})
+    let newPage = this.state.page+1
+    fetch(
+      "http://triviacrack-env.eba-3vx47zu9.us-east-1.elasticbeanstalk.com/QuestionReview/questions?page=" +
+        newPage+
+        "&pageSize=" +
+        this.state.pageSize+"&catagory="+this.state.catagoryId
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ page:newPage,data: this.state.data.concat(data),fetchingData:false });
+      })
+      .catch((err) => {
+        this.setState({ fetchingData:false });
         console.log(err.message);
       });
   }
@@ -49,8 +71,8 @@ class StoryScreen extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: data };
 
-  fetch("http://localhost:5001/QuestionReview/updateQuestion", requestOptions)
-      .then(response => console.log(response))
+  fetch("http://triviacrack-env.eba-3vx47zu9.us-east-1.elasticbeanstalk.com/QuestionReview/updateQuestion", requestOptions)
+      .then(response => this.getNewData())
   }
   
 
