@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Navigate } from "react-router-dom";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -20,7 +21,28 @@ class Home extends React.Component {
  
 
   componentDidMount() {
-    fetch("http://triviacrack-env.eba-3vx47zu9.us-east-1.elasticbeanstalk.com/QuestionReview/catagories")
+
+    fetch("http://triviacrack-env.eba-3vx47zu9.us-east-1.elasticbeanstalk.com/QuestionReview/catagories", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Disable SSL verification
+      // Note: this is not recommended for production use
+      // as it can expose you to security risks
+      // and should only be used for development purposes
+      // or when connecting to trusted endpoints
+      // with self-signed certificates
+      // that cannot be verified by a trusted certificate authority
+      // (e.g., testing servers)
+      // See https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Access-Control-Allow-Origin
+      // for more information about the 'Access-Control-Allow-Origin' header
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
       .then((res) => res.json())
       .then((data) => {
         this.setState({ catagories: data });
